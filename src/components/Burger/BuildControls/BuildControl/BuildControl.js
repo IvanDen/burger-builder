@@ -9,7 +9,6 @@ export const BuildControl = (props) => (
 				disabled={props.disabled}
 		>Less</button>
 		<button className={classes.More}
-				onClick={props.added}
-		>More</button>
+				onClick={props.added}>More</button>
 	</div>
 );
