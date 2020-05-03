@@ -93,6 +93,10 @@ export const BurgerBuilder = (props) => {
 		} );
 	}
 
+	const purchaseContinueHandler = () => {
+		alert('You continue');
+	}
+
 	const disabledInfo = {
 		...builderState.ingredients
 	}
@@ -108,7 +112,9 @@ export const BurgerBuilder = (props) => {
 					<OrderSummary
 						ingredients={builderState.ingredients}
 						price={builderState.totalPrice}
-						purchaseCancelled={purchaseCancelHandler} />;
+						purchaseCancelled={purchaseCancelHandler}
+						purchaseContinued={purchaseContinueHandler}
+					/>;
 				</Modal>
 			</Aux>
 			<Burger ingredients={builderState.ingredients} />

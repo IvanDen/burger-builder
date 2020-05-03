@@ -9,6 +9,7 @@
 
 .BreadTop {
 	height: 20%;
+	min-height: 120px;
 	width: 80%;
 	background: linear-gradient(#bc581e, #e27b36);
 	border-radius: 50% 50% 0 0;

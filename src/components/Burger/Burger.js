@@ -19,10 +19,12 @@ export const Burger = (props) => {
 	}
 
 	return (
-		<div className={classes.Burger}>
-			<BurgerIngredient type="bread-top" />
-			{transformedIngredients}
-			<BurgerIngredient type="bread-bottom" />
+		<div className={classes.wrapBurger}>
+			<div className={classes.Burger}>
+				<BurgerIngredient type="bread-top" />
+				{transformedIngredients}
+				<BurgerIngredient type="bread-bottom" />
+			</div>
 		</div>
 	);
 };
