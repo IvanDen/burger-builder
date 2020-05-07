@@ -1,22 +1,27 @@
 import React, {useState} from 'react';
-import Aux from '../../hoc/Ayx';
+import Aux from '../../hoc/Ayx/Ayx';
 import classes from './Layout.module.css';
-import {Toolbar} from "../Navigation/ToolBar/ToolBar";
-import {SideDrawer} from "../Navigation/SideDrawer/SideDrawer";
+import {Toolbar} from "../../components/Navigation/ToolBar/ToolBar";
+import {SideDrawer} from "../../components/Navigation/SideDrawer/SideDrawer";
+
 const Layout = (props) => {
 	const [layoutState, setLayoutState] = useState({
-		showSideDrawer: true,
+		showSideDrawer: false,
 	});
 
 	const sideDrawerClosedHandler = () => {
-		setLayoutState({
-			showSideDrawer: false,
+		setLayoutState({showSideDrawer: false});
+	}
+
+	const sideDrawerToggleHandler = () => {
+		setLayoutState((prevState) => {
+			return {showSideDrawer: !prevState.showSideDrawer};
 		});
 	}
 
 	return (
 		<Aux>
-			<Toolbar/>
+			<Toolbar drawerToggleClicked={sideDrawerToggleHandler} />
 			<SideDrawer open={layoutState.showSideDrawer} closed={sideDrawerClosedHandler} />
 			<main className={classes.content}>
 				<div>Toolbar, SideDrawer, Backdrop</div>
