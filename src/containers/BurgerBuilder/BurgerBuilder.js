@@ -4,6 +4,7 @@ import {Burger} from "../../components/Burger/Burger";
 import {BuildControls} from "../../components/Burger/BuildControls/BuildControls";
 import Modal from "../../components/UI/Modal/Modal";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
+import axios from '../../axios-orders';
 
 const INGREDIENT_PRICES = {
 	salad: 0.6,
@@ -93,8 +94,31 @@ export const BurgerBuilder = (props) => {
 		} );
 	}
 
-	const purchaseContinueHandler = () => {
-		alert('You continue');
+	const purchaseContinueHandler = async () => {
+		const order = {
+			ingredients: builderState.ingredients,
+			price: builderState.totalPrice,
+			customer: {
+				name: 'Ivan Den',
+				address: {
+					street: 'Teststreet 11',
+					zipCode: '22334',
+					country: 'Russia',
+				},
+				email: 'test@test.com',
+			},
+			deliveryMethod: 'fastest'
+		}
+		let response = await axios.post('/orders.json', order);
+		if (response.reject) {
+			console.log(response.reject);
+		}
+		else {
+			console.log(response);
+		}
+		// await axios.post('/orders.json', order)
+		// 	.then(response => console.log(response))
+		// 	.catch(error => console.log(error));
 	}
 
 	const disabledInfo = {
