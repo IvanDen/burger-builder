@@ -110,40 +110,41 @@ const BurgerBuilder = (props) => {
 
 	const purchaseContinueHandler = () => {
 
-		setBuilderState({
-			...builderState,
-			loading: true,
-		});
-
-		const order = {
-			ingredients: builderState.ingredients,
-			price: builderState.totalPrice,
-			customer: {
-				name: 'Ivan Den',
-				address: {
-					street: 'Teststreet 11',
-					zipCode: '22334',
-					country: 'Russia',
-				},
-				email: 'test@test.com',
-			},
-			deliveryMethod: 'fastest'
-		}
-		axios.post('/orders.json', order)
-			.then(response => {
-				setBuilderState({
-					...builderState,
-					loading: false,
-					purchasing: false,
-				});
-			})
-			.catch(error => {
-				setBuilderState({
-					...builderState,
-					loading: false,
-					purchasing: false,
-				});
-			});
+		// setBuilderState({
+		// 	...builderState,
+		// 	loading: true,
+		// });
+		//
+		// const order = {
+		// 	ingredients: builderState.ingredients,
+		// 	price: builderState.totalPrice,
+		// 	customer: {
+		// 		name: 'Ivan Den',
+		// 		address: {
+		// 			street: 'Teststreet 11',
+		// 			zipCode: '22334',
+		// 			country: 'Russia',
+		// 		},
+		// 		email: 'test@test.com',
+		// 	},
+		// 	deliveryMethod: 'fastest'
+		// }
+		// axios.post('/orders.json', order)
+		// 	.then(response => {
+		// 		setBuilderState({
+		// 			...builderState,
+		// 			loading: false,
+		// 			purchasing: false,
+		// 		});
+		// 	})
+		// 	.catch(error => {
+		// 		setBuilderState({
+		// 			...builderState,
+		// 			loading: false,
+		// 			purchasing: false,
+		// 		});
+		// 	});
+		props.history.push('/checkout');
 	}
 
 	const disabledInfo = {
