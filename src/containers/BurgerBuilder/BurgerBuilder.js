@@ -109,42 +109,17 @@ const BurgerBuilder = (props) => {
 	}
 
 	const purchaseContinueHandler = () => {
+		const queryParams = [];
+		for (let i in builderState.ingredients) {
+			queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(builderState.ingredients[i]));
+		}
+		queryParams.push('price=' + builderState.totalPrice.toFixed(2));
+		const queryString = queryParams.join('&');
 
-		// setBuilderState({
-		// 	...builderState,
-		// 	loading: true,
-		// });
-		//
-		// const order = {
-		// 	ingredients: builderState.ingredients,
-		// 	price: builderState.totalPrice,
-		// 	customer: {
-		// 		name: 'Ivan Den',
-		// 		address: {
-		// 			street: 'Teststreet 11',
-		// 			zipCode: '22334',
-		// 			country: 'Russia',
-		// 		},
-		// 		email: 'test@test.com',
-		// 	},
-		// 	deliveryMethod: 'fastest'
-		// }
-		// axios.post('/orders.json', order)
-		// 	.then(response => {
-		// 		setBuilderState({
-		// 			...builderState,
-		// 			loading: false,
-		// 			purchasing: false,
-		// 		});
-		// 	})
-		// 	.catch(error => {
-		// 		setBuilderState({
-		// 			...builderState,
-		// 			loading: false,
-		// 			purchasing: false,
-		// 		});
-		// 	});
-		props.history.push('/checkout');
+		props.history.push({
+			pathname: '/checkout',
+			search: `?${queryString}`,
+		});
 	}
 
 	const disabledInfo = {
