@@ -2,6 +2,7 @@ import React, {Component, useState, useEffect} from 'react';
 import Button from "../../../components/UI/Button/Button";
 import classes from "./ContactData.module.css"
 import axios from "../../../axios-orders";
+import Spinner from "../../../components/UI/Spinner/Spinner";
 
 const ContactData = (props) => {
 	const [contactData , setContactData] = useState({
@@ -41,6 +42,7 @@ const ContactData = (props) => {
 					...contactData,
 					loading: false,
 				});
+				props.history.push('/');
 			})
 			.catch(error => {
 				setContactData({
@@ -51,18 +53,23 @@ const ContactData = (props) => {
 		event.preventDefault();
 	}
 
-	return (
-		<div className={classes.ContactData}>
-			<h4>Enter your contact data</h4>
-			<form action="">
-				<input className={classes.Input} type="text" name="name" placeholder="Your Name" />
-				<input className={classes.Input} type="email" name="email" placeholder="Your Mail" />
-				<input className={classes.Input} type="text" name="street" placeholder="Street" />
-				<input className={classes.Input} type="text" name="postal" placeholder="Postal Code" />
-				<Button btnType="Success" clicked={orderHandler}>ORDER</Button>
-			</form>
-		</div>
-	)
+	if (contactData.loading) {
+		return <Spinner />
+	}
+	else {
+		return (
+			<div className={classes.ContactData}>
+				<h4>Enter your contact data</h4>
+				<form action="">
+					<input className={classes.Input} type="text" name="name" placeholder="Your Name" />
+					<input className={classes.Input} type="email" name="email" placeholder="Your Mail" />
+					<input className={classes.Input} type="text" name="street" placeholder="Street" />
+					<input className={classes.Input} type="text" name="postal" placeholder="Postal Code" />
+					<Button btnType="Success" clicked={orderHandler}>ORDER</Button>
+				</form>
+			</div>
+		);
+	}
 }
 
 export default ContactData;

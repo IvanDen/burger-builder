@@ -48,10 +48,11 @@ const Checkout = (props) => {
 			/>
 			<Route
 				path={props.match.path + '/contact-data'}
-				render={() => (
+				render={(props) => (
 					<ContactData
 						ingredients={checkout.ingredients}
 						price={checkout.totalPrice}
+						{...props}
 					/>
 				)} />
 		</>
