@@ -24,7 +24,6 @@ const Layout = (props) => {
 			<Toolbar drawerToggleClicked={sideDrawerToggleHandler} />
 			<SideDrawer open={layoutState.showSideDrawer} closed={sideDrawerClosedHandler} />
 			<main className={classes.content}>
-				<div>Toolbar, SideDrawer, Backdrop</div>
 				{props.children}
 			</main>
 		</Aux>
