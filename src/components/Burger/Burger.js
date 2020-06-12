@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 
 
 export const Burger = withRouter((props) => {
-	console.log("Burger - ", props);
 	let transformedIngredients = Object.keys(props.ingredients)
 		.map(igKey => {
 			return [...Array(props.ingredients[igKey])].map((_, i) => {

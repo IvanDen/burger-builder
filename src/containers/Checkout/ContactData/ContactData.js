@@ -4,6 +4,7 @@ import classes from "./ContactData.module.css"
 import axios from "../../../axios-orders";
 import Spinner from "../../../components/UI/Spinner/Spinner";
 import {Input} from "../../../components/UI/Input/Input";
+import _ from 'lodash';
 
 const ContactData = (props) => {
 	const [contactData , setContactData] = useState({
@@ -14,7 +15,11 @@ const ContactData = (props) => {
 					type: 'text',
 					placeholder: 'Your Name'
 				},
-				value: ''
+				value: '',
+				validation: {
+					required: true
+				},
+				valid: false
 			},
 			street: {
 				elementType: 'input',
@@ -22,7 +27,11 @@ const ContactData = (props) => {
 					type: 'text',
 					placeholder: 'Street'
 				},
-				value: ''
+				value: '',
+				validation: {
+					required: true
+				},
+				valid: false
 			},
 			zipCode: {
 				elementType: 'input',
@@ -30,7 +39,13 @@ const ContactData = (props) => {
 					type: 'text',
 					placeholder: 'Your ZIP code'
 				},
-				value: ''
+				value: '',
+				validation: {
+					required: true,
+					minLength: 6,
+					maxLength: 6,
+				},
+				valid: false
 			},
 			country: {
 				elementType: 'input',
@@ -38,7 +53,11 @@ const ContactData = (props) => {
 					type: 'text',
 					placeholder: 'Country'
 				},
-				value: ''
+				value: '',
+				validation: {
+					required: true
+				},
+				valid: false
 			},
 			email: {
 				elementType: 'input',
@@ -46,7 +65,11 @@ const ContactData = (props) => {
 					type: 'text',
 					placeholder: 'Email'
 				},
-				value: ''
+				value: '',
+				validation: {
+					required: true
+				},
+				valid: false
 			},
 			deliveryMethod: {
 				elementType: 'select',
@@ -54,40 +77,32 @@ const ContactData = (props) => {
 					options: [
 						{value: 'fastest', displayValue: 'Fastest'},
 						{value: 'cheapest', displayValue: 'Cheapest'}
-					]
+					],
+					config: {}
 				},
 				value: ''
 			}
-
-			// name: 'Ivan Den',
-			// street: 'Teststreet 11',
-			// zipCode: '22334',
-			// country: 'Russia',
-			// email: 'test@test.com',
 		},
 		loading: false,
 	});
 
 	const orderHandler = (event) => {
+		event.preventDefault();
 
 		setContactData({
 			...contactData,
 			loading: true,
 		});
 
+		const formData = {}
+		for (let formElementIdentifier in contactData.orderForm ) {
+			formData[formElementIdentifier] = contactData.orderForm[formElementIdentifier].value;
+		}
+
 		const order = {
 			ingredients: props.ingredients,
 			price: props.price,
-			customer: {
-				name: 'Ivan Den',
-				address: {
-					street: 'Teststreet 11',
-					zipCode: '22334',
-					country: 'Russia',
-				},
-				email: 'test@test.com',
-			},
-			deliveryMethod: 'fastest'
+			orderData: formData,
 		}
 		axios.post('/orders.json', order)
 			.then(response => {
@@ -103,7 +118,35 @@ const ContactData = (props) => {
 					loading: false,
 				});
 			});
-		event.preventDefault();
+	}
+
+	const checkValidity = (value, rules) => {
+		let isValid = false;
+		if (rules.required) {
+			isValid = value.trim() !== '';
+		}
+
+		if (rules.minLength) {
+			isValid = value.length >= rules.minLength;
+		}
+
+		if (rules.maxLength) {
+			isValid = value.length <= rules.maxLength;
+		}
+
+		return isValid;
+	}
+
+	const inputChangedHandler = (event, inputIdentifier) => {
+		const updateOrderForm = _.clone(contactData.orderForm);
+		updateOrderForm[inputIdentifier].value = event.target.value;
+		updateOrderForm[inputIdentifier].valid = checkValidity(updateOrderForm[inputIdentifier].value, updateOrderForm[inputIdentifier].validation);
+
+		setContactData({
+			...contactData,
+			orderForm: updateOrderForm
+		});
+
 	}
 
 	const formElementArray = [];
@@ -121,15 +164,17 @@ const ContactData = (props) => {
 		return (
 			<div className={classes.ContactData}>
 				<h4>Enter your contact data</h4>
-				<form action="">
+				<form action="" onSubmit={orderHandler}>
 					{formElementArray.map(formElement => (
 						<Input
 							key={formElement.id}
 							elementType={formElement.config.elementType}
 							elementConfig={formElement.config.elementConfig}
-							value={formElement.config.value}/>
+							value={formElement.config.value}
+							changed={(event) => inputChangedHandler(event, formElement.id)}
+						/>
 					))}
-					<Button btnType="Success" clicked={orderHandler}>ORDER</Button>
+					<Button btnType="Success" >ORDER</Button>
 				</form>
 			</div>
 		);
